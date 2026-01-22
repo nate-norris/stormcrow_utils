@@ -7,11 +7,19 @@
 //! - [`PacketT`]: the trait defining a packet to be sent as bytes over the MM2T port
 //! - [`MM2TTransport`]: a real hardware implementation using a serial port.
 
-pub mod mm2t;
-pub mod packet;
+// internal package imports
 pub(crate) mod checksum;
-pub(crate) mod packet_decoder;
+
+// packets always included regardless of features
+pub mod packet;
+pub mod mm2t;
+
+// optional mm2t-rx feature
+#[cfg(feature = "mm2t-rx")]
+pub mod packet_decoder;
 
 // re-export commmon types and functions
 pub use mm2t::MM2TTransport;
 pub use packet::PacketT;
+#[cfg(feature = "mm2t-rx")]
+pub use packet_decoder::{PacketDecoder, DecodedPacket};
