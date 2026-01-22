@@ -1,11 +1,6 @@
 use super::checksum::checksum;
 
 pub const SOP: u8 = 0xAA; // start of packet
-
-
-pub mod packet_decoder {
-    
-}
 const MAX_PAYLOAD_LEN: usize = 64; // ensure no run on packet reads
 
 enum DecodeState {
