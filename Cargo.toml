@@ -3,6 +3,12 @@ name = "stormcrow_mm2t"
 version = "0.1.0"
 edition = "2024"
 
+[features]\
+defualt = []
+mm2t-tx = []
+mm2t-rx = []
+full = ["mm2t-tx", "mm2t-rx"]
+
 [dependencies]
 anyhow = "1.0.100"
 tokio = { version = "1.49.0", features = ["full"] }
