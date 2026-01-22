@@ -51,7 +51,7 @@ impl MM2TTransport {
     }
 
     /// send bytes over the port
-    #[cfg(features = "mm2t-tx")]
+    #[cfg(feature = "mm2t-tx")]
     pub async fn send(&self, bytes: &[u8]) -> anyhow::Result<()> {
         let mut port = self.port.lock().await;
         port.write_all(bytes).await?;
@@ -61,7 +61,7 @@ impl MM2TTransport {
     }
 
     /// read bytes over the port
-    #[cfg(features = "mm2t-rx")]
+    #[cfg(feature = "mm2t-rx")]
     pub async fn read(&self) -> anyhow::Result<u8> {
         let mut port = self.port.lock().await;
         let mut buf = [0u8; 1];
