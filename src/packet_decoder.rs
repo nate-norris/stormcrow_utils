@@ -1,20 +1,7 @@
 use super::checksum::checksum;
-use super::models::SOP;
+use super::models::{SOP, DecodeState, DecodedPacket};
 
 const MAX_PAYLOAD_LEN: usize = 64; // ensure no run on packet reads
-
-enum DecodeState {
-    WaitSOP,
-    PacketType,
-    Length,
-    Payload,
-    Checksum
-}
-
-pub struct DecodedPacket {
-    packet_type: u8,
-    payload: Vec<u8>,
-}
 
 pub struct PacketDecoder {
     state: DecodeState,
