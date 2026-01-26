@@ -23,4 +23,6 @@ pub mod packet_decoder;
 pub use mm2t::MM2TTransport;
 pub use packet::PacketT;
 #[cfg(feature = "mm2t-rx")]
-pub use packet_decoder::{PacketDecoder, DecodedPacket};
+pub use packet_decoder::PacketDecoder;
+#[cfg(feature = "mm2t-rx")]
+pub use models::DecodedPacket;
