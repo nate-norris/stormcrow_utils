@@ -1,7 +1,9 @@
-
-use tokio::{io::AsyncReadExt, sync::Mutex};
+#[cfg(feature = "mm2t-rx")]
+use tokio::io::AsyncReadExt;
+use tokio::sync::Mutex;
 use tokio_serial::{SerialStream, SerialPortBuilderExt, DataBits, Parity, 
     StopBits, FlowControl}; //SerialStream
+#[cfg(feature = "mm2t-tx")]
 use tokio::io::AsyncWriteExt;
 
 /// Represents a handle to an MM2T device over a serial connection.
