@@ -1,5 +1,5 @@
 use super::checksum::checksum;
-use super::packet_decoder::SOP;
+use super::models::SOP;
 
 pub trait PacketT {
 
