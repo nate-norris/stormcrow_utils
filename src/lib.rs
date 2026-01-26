@@ -9,6 +9,7 @@
 
 // internal package imports
 pub(crate) mod checksum;
+pub(crate) mod models;
 
 // packets always included regardless of features
 pub mod packet;
