@@ -1,10 +1,12 @@
-#[cfg(feature = "mm2t-rx")]
-use tokio::io::AsyncReadExt;
+#[cfg(any(feature = "mm2t-tx", feature = "mm2t-rx"))]
 use tokio::sync::Mutex;
+#[cfg(any(feature = "mm2t-tx", feature = "mm2t-rx"))]
 use tokio_serial::{SerialStream, SerialPortBuilderExt, DataBits, Parity, 
     StopBits, FlowControl}; //SerialStream
 #[cfg(feature = "mm2t-tx")]
 use tokio::io::AsyncWriteExt;
+#[cfg(feature = "mm2t-rx")]
+use tokio::io::AsyncReadExt;
 
 /// Represents a handle to an MM2T device over a serial connection.
 ///
@@ -29,12 +31,14 @@ use tokio::io::AsyncWriteExt;
 /// }
 /// ```
 pub struct MM2TTransport {
+    #[cfg(any(feature = "mm2t-tx", feature = "mm2t-rx"))]
     port: Mutex<SerialStream>
 }
 
 impl MM2TTransport {
 
     /// opens a serial connection to the MM2T device
+    #[cfg(any(feature = "mm2t-tx", feature = "mm2t-rx"))]
     pub async fn start(port_name: &str) -> anyhow::Result<Self> {
         //define parameters for opening serial port
         let port_builder = tokio_serial::new(port_name, 38_400)
@@ -50,6 +54,10 @@ impl MM2TTransport {
         Ok(Self {
             port: Mutex::new(stream)
         })
+    }
+
+    pub async fn start(_port_name: &str) -> anyhow::Result<Self> {
+        anyhow::bail!("MM2TTransport requires feature mm2t-tx or mm2t-rx");
     }
 
     /// send bytes over the port
