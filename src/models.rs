@@ -1,0 +1,1 @@
+pub const SOP: u8 = 0xAA; // start of packet
