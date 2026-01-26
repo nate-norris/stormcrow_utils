@@ -12,8 +12,8 @@ pub(crate) mod checksum;
 pub(crate) mod models;
 
 // packets always included regardless of features
-pub mod packet;
-pub mod mm2t;
+mod packet;
+mod mm2t;
 
 // optional mm2t-rx feature
 #[cfg(feature = "mm2t-rx")]
