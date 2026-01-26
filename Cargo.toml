@@ -3,7 +3,7 @@ name = "stormcrow_mm2t"
 version = "0.1.0"
 edition = "2024"
 
-[features]\
+[features]
 defualt = []
 mm2t-tx = []
 mm2t-rx = []
