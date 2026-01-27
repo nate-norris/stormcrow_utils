@@ -11,7 +11,7 @@ pub enum SpeakerNotification {
 
 // mpsc channels for SpeakerNotification types
 // used by producers to send edge events
-pub type SpeakerTx = mpsc::Sender<SpeakderNotification>;
+pub type SpeakerTx = mpsc::Sender<SpeakerNotification>;
 // used by consuemrs to receive edge events
 pub type SpeakerRx = mpsc::Receiver<SpeakerNotification>;  
 
