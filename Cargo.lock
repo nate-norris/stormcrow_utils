@@ -368,7 +368,7 @@ dependencies = [
 
 [[package]]
 name = "stormcrow_mm2t"
-version = "0.1.2"
+version = "0.1.3"
 dependencies = [
  "anyhow",
  "tokio",
