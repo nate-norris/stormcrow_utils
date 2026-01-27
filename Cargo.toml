@@ -4,7 +4,7 @@ version = "0.1.4"
 edition = "2024"
 
 [features]
-defualt = []
+default = []
 mm2t-tx = []
 mm2t-rx = []
 full = ["mm2t-tx", "mm2t-rx"]
