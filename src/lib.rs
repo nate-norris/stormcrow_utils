@@ -1,28 +1,4 @@
-//! # lib_mm2t
-//!
-//! Provides an abstraction layer for interacting with the 900 MHz
-//! serial radio in a Tokio async contexts.
-//!
-//! This library exposes:
-//! - [`PacketT`]: the trait defining a packet to be sent as bytes over the MM2T port
-//! - [`MM2TTransport`]: a real hardware implementation using a serial port.
+//! # lib
+//! 
 
-// internal package imports
-pub(crate) mod checksum;
-pub(crate) mod models;
-
-// packets always included regardless of features
-mod packet;
-mod mm2t;
-
-// optional mm2t-rx feature
-#[cfg(feature = "mm2t-rx")]
-pub mod packet_decoder;
-
-// re-export commmon types and functions
-pub use mm2t::MM2TTransport;
-pub use packet::PacketT;
-#[cfg(feature = "mm2t-rx")]
-pub use packet_decoder::PacketDecoder;
-#[cfg(feature = "mm2t-rx")]
-pub use models::DecodedPacket;
+pub mod mm2t;
