@@ -56,6 +56,7 @@ impl MM2TTransport {
         })
     }
 
+    #[cfg(not(any(feature = "mm2t-tx", feature = "mm2t-rx")))]
     pub async fn start(_port_name: &str) -> anyhow::Result<Self> {
         anyhow::bail!("MM2TTransport requires feature mm2t-tx or mm2t-rx");
     }
