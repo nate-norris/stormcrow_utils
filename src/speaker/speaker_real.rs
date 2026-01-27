@@ -80,7 +80,7 @@ impl SpeakerT for SpeakerReal {
                     let mut p = port.lock().await;
                     // send bytes for beep command
                     //      if error occurs simply log
-                    p.write_all(b"1").await;
+                    let _ = p.write_all(b"1").await;
 
                     drop(p); // release lock before sleeping
                     sleep(std::time::Duration::from_secs(1)).await;
