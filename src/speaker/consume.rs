@@ -67,7 +67,9 @@ pub async fn speaker_consume_task(mut rx: SpeakerRx) {
             }
             // if errors occur turn on the error pattern
             //      lockout other booms from occuring
-            SpeakerNotification::SoundSensorError | SpeakerNotification::RadioError => {
+            SpeakerNotification::SoundSensorError | 
+                SpeakerNotification::RadioError | 
+                SpeakerNotification::AirmarError => {
                 error_triggered = true;
                 speaker.spawn_error_pattern();
             }
