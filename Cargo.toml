@@ -11,6 +11,7 @@ full = ["mm2t-tx", "mm2t-rx"]
 
 [dependencies]
 anyhow = "1.0.100"
+async-trait = "0.1.89"
 log = "0.4.29"
 simplelog = "0.12.2"
 tokio = { version = "1.49.0", features = ["full"] }
