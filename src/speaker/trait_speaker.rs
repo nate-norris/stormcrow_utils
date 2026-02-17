@@ -2,7 +2,8 @@
 /// 
 /// To be used by Rx events to notify for sound sensor edge detection
 /// or errors in hardware.
-pub(crate) trait SpeakerT {
+#[async_trait::async_trait]
+pub(crate) trait SpeakerT: Send + Sync {
     /// Initializes a new speaker instance.
     ///
     /// # Returns
@@ -41,4 +42,13 @@ pub(crate) trait SpeakerT {
     /// This function is intentionally non-async because it should launch
     /// its own async task rather than block the caller.
     fn spawn_error_pattern(&self);
+
+    /// Implementation of recoverable pattern
+    /// 
+    /// # Behavior
+    /// This is activated when the caller has an error that is possible
+    /// to recover from. It can be turned off or on during execution.
+    /// The handling of the watch channel for this event is completed by
+    /// RecoverableRunner struct.
+    async fn perform_recoverable(&self) -> anyhow::Result<()>;
 }

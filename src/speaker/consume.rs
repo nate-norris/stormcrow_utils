@@ -1,6 +1,10 @@
+use core::error;
+use std::sync::Arc;
+
 use super::models::{SpeakerRx, SpeakerNotification};
 use super::speaker_mock::SpeakerMock;
 use super::trait_speaker::SpeakerT;
+use super::recoverable::RecoverableRunner;
 
 /// Asynchronous speaker consumer task.
 ///
@@ -54,12 +58,14 @@ use super::trait_speaker::SpeakerT;
 pub async fn speaker_consume_task(mut rx: SpeakerRx) {
     let mut error_triggered = false;
     // speaker for sound patterns
-    let speaker = SpeakerMock::new().unwrap();
+    let speaker = Arc::new(SpeakerMock::new().unwrap());
+    let runner = RecoverableRunner::new(Arc::clone(&speaker));
 
     // wait for incoming SpeakerRx
     while let Some(event) = rx.recv().await {
         match event {
             // when there is a boom with no errors create the boom pattern
+            // NOTE: this only applies to program using Boom notifications
             SpeakerNotification::Boom => {
                 if !error_triggered {
                     let _ = speaker.boom_pattern().await;
@@ -72,6 +78,11 @@ pub async fn speaker_consume_task(mut rx: SpeakerRx) {
                 SpeakerNotification::AirmarError => {
                 error_triggered = true;
                 speaker.spawn_error_pattern();
+            }
+            // specific error that is recoverable for weather timeout
+            //      continue the pattern until turned off
+            SpeakerNotification::WeatherTimeoutError(is_on) => {
+                if is_on && !error_triggered { runner.on(); } else { runner.off();}
             }
         }
     }

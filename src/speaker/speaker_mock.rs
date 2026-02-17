@@ -10,6 +10,7 @@ use super::models::ERROR_START;
 #[allow(dead_code)]
 pub(crate) struct SpeakerMock {}
 
+#[async_trait::async_trait]
 impl SpeakerT for SpeakerMock {
 
     /// Initializes a new speaker instance.
@@ -53,5 +54,18 @@ impl SpeakerT for SpeakerMock {
                 }
             });
         });
+    }
+
+    /// Implementation of recoverable pattern
+    /// 
+    /// # Behavior
+    /// This is activated when the caller has an error that is possible
+    /// to recover from. It can be turned off or on during execution.
+    /// The handling of the watch channel for this event is completed by
+    /// RecoverableRunner struct.
+    #[allow(dead_code)]
+    async fn perform_recoverable(&self) -> anyhow::Result<()> {
+        println!("speaker mock: recoverable error pattern");
+        Ok(())
     }
 }

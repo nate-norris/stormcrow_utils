@@ -16,6 +16,7 @@ use super::models::ERROR_START;
 pub(crate) struct SpeakerReal {
     port: Arc<Mutex<SerialStream>>,
 }
+#[async_trait::async_trait]
 impl SpeakerT for SpeakerReal {
     /// initialized, or configured properly.
     /// 
@@ -87,5 +88,22 @@ impl SpeakerT for SpeakerReal {
                 }
             });
         });
+    }
+
+    /// Implementation of recoverable pattern
+    /// 
+    /// # Behavior
+    /// This is activated when the caller has an error that is possible
+    /// to recover from. It can be turned off or on during execution.
+    /// The handling of the watch channel for this event is completed by
+    /// RecoverableRunner struct.
+    #[allow(dead_code)]
+    async fn perform_recoverable(&self) -> anyhow::Result<()>{
+        let mut port = self.port.lock().await;
+        for _ in 0..3 {
+            port.write_all(b"1").await?;
+            sleep(std::time::Duration::from_millis(250)).await;
+        }
+        Ok(())
     }
 }

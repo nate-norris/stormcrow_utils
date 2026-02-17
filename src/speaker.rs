@@ -35,6 +35,7 @@
 //! ```
 
 mod trait_speaker;
+mod recoverable;
 
 pub mod models;
 pub mod consume;

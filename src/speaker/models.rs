@@ -8,6 +8,7 @@ pub enum SpeakerNotification {
     SoundSensorError, // notification for sound sensor hardware issues
     RadioError, // notification for radio hardware issues
     AirmarError, // notification for airmar weather hardware issues
+    WeatherTimeoutError(bool), // notification for delay in receiving weather
 }
 
 // mpsc channels for SpeakerNotification types
