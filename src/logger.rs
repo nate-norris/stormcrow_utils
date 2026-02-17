@@ -62,17 +62,26 @@ pub fn info(message: impl std::fmt::Display) {
 /// 
 /// # Arguments
 /// `message` - the primary error text
-/// `extra` - an additional value to append to log
 /// 
 /// # Examples
 /// ```
-/// logger::error("sensor failure", None);
-/// logger::error("sensor failure:", Some(err));
+/// logger::error("sensor failure");
 /// ```
-pub fn error(message: impl std::fmt::Display, 
-    extra: Option<&dyn std::fmt::Display>) {
-    match extra {
-        Some(e) => log::error!("{} {}", message, e),
-        None => log::error!("{}", message),
-    }
+pub fn error(message: impl std::fmt::Display) {
+    log::error!("{message}");
+}
+
+/// Writes error logs
+/// Arguments must implement ['std::fmt:;Display']
+/// 
+/// # Arguments
+/// `message` - the primary error text
+/// `error` - an additional value to append to log
+/// 
+/// # Examples
+/// ```
+/// logger::error("sensor failure:", err);
+/// ```
+pub fn error_with(message: impl std::fmt::Display, error: impl std::fmt::Display) {
+    log::error!("{} {}", message, error);
 }
