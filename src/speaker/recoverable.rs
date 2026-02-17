@@ -23,7 +23,7 @@ where
                 if rx.changed().await.is_err() { break; }
                 if *rx.borrow() {
                     if let Err(e) = task_target_clone.perform_recoverable().await {
-                        eprintln!("error");
+                        eprintln!("speaker recoverable runner error {e}");
                     }
                 }
                 sleep(Duration::from_secs(2)).await;
