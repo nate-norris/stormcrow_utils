@@ -6,7 +6,7 @@ use super::trait_speaker::SpeakerT;
 
 pub(crate) struct RecoverableRunner<T> {
     tx: watch::Sender<bool>,
-    _task_handle: tokio::task::JoinHandle<()>,
+    _task_handle: tokio::task::JoinHandle<Result<(), anyhow::Error>>,
     _target: Arc<T>, // stored Arc for task
 }
 
@@ -22,16 +22,12 @@ where
             loop {
                 // do nothing while not in recoverable mode
                 while !*rx.borrow() {
-                    if rx.changed().await.is_err() {
-                        return;
-                    }
+                    rx.changed().await?;
                 }
 
                 // call recoverable action if in recoverable mode every 2 sec
                 while *rx.borrow() {
-                    if let Err(e) = task_target_clone.perform_recoverable().await {
-                        println!("{}", e);
-                    }
+                    task_target_clone.perform_recoverable().await?;
                     sleep(Duration::from_secs(2)).await;
                 }
             }
