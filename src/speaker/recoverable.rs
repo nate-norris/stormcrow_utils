@@ -20,13 +20,20 @@ where
 
         let task_handle = tokio::spawn(async move {
             loop {
-                if rx.changed().await.is_err() { break; }
-                if *rx.borrow() {
-                    if let Err(e) = task_target_clone.perform_recoverable().await {
-                        eprintln!("speaker recoverable runner error {e}");
+                // do nothing while not in recoverable mode
+                while !*rx.borrow() {
+                    if rx.changed().await.is_err() {
+                        return;
                     }
                 }
-                sleep(Duration::from_secs(2)).await;
+
+                // call recoverable action if in recoverable mode every 2 sec
+                while *rx.borrow() {
+                    if let Err(e) = task_target_clone.perform_recoverable().await {
+                        println!("{}", e);
+                    }
+                    sleep(Duration::from_secs(2)).await;
+                }
             }
         });
 
