@@ -1,6 +1,6 @@
 [package]
 name = "stormcrow_utils"
-version = "0.1.10"
+version = "0.1.17"
 edition = "2024"
 
 [features]
@@ -14,5 +14,5 @@ anyhow = "1.0.100"
 async-trait = "0.1.89"
 log = "0.4.29"
 simplelog = "0.12.2"
-tokio = { version = "1.49.0", features = ["full"] }
+tokio = { version = "1", features = ["full"] }
 tokio-serial = "5.4.5"
