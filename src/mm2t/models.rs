@@ -11,6 +11,6 @@ pub(crate) enum DecodeState {
 
 #[cfg(feature = "mm2t-rx")]
 pub struct DecodedPacket {
-    packet_type: u8,
-    payload: Vec<u8>,
+    pub packet_type: u8,
+    pub payload: Vec<u8>,
 }
