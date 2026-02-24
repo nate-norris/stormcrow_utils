@@ -1,7 +1,7 @@
 pub const SOP: u8 = 0x24; // start of packet $
 
 #[cfg(feature = "mm2t-rx")]
-enum DecodeState {
+pub(crate) enum DecodeState {
     WaitSOP,
     PacketType,
     Length,
