@@ -40,6 +40,7 @@ impl MM2TTransport {
     /// opens a serial connection to the MM2T device
     #[cfg(any(feature = "mm2t-tx", feature = "mm2t-rx"))]
     pub async fn start(port_name: &str) -> anyhow::Result<Self> {
+        println!("starting mm2t transport");
         //define parameters for opening serial port
         let port_builder = tokio_serial::new(port_name, 38_400)
             .data_bits(DataBits::Eight)
@@ -48,8 +49,11 @@ impl MM2TTransport {
             .flow_control(FlowControl::None)
             .timeout(std::time::Duration::from_secs(3));
 
+        println!("made the port");
+
         let stream = port_builder
             .open_native_async()?;
+        println!("made the stream");
 
         Ok(Self {
             port: Mutex::new(stream)
