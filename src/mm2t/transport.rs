@@ -41,6 +41,7 @@ impl MM2TTransport {
     #[cfg(any(feature = "mm2t-tx", feature = "mm2t-rx"))]
     pub async fn start(port_name: &str) -> anyhow::Result<Self> {
         println!("starting mm2t transport");
+        println!("{:?}", port_name);
         //define parameters for opening serial port
         let port_builder = tokio_serial::new(port_name, 38_400)
             .data_bits(DataBits::Eight)
