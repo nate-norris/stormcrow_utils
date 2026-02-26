@@ -1,5 +1,5 @@
 #[cfg(any(feature = "mm2t-tx", feature = "mm2t-rx"))]
-use tokio::sync::Mutex;
+use tokio::sync::{Arc, Mutex};
 #[cfg(any(feature = "mm2t-tx", feature = "mm2t-rx"))]
 use tokio_serial::{SerialStream, SerialPortBuilderExt, DataBits, Parity, 
     StopBits, FlowControl}; //SerialStream
@@ -77,8 +77,39 @@ impl MM2TTransport {
     pub async fn read(&self) -> anyhow::Result<u8> {
         let mut port = self.port.lock().await;
         let mut buf = [0u8; 1];
-        println!("mm2t read: {:?}", buf[0]);
+        
         port.read_exact(&mut buf).await?;
+        println!("mm2t read: {:?}", buf[0]);
         Ok(buf[0])
+    }
+
+    #[cfg(feature = "mm2t-rx")]
+    pub fn spawn_raw_read(&self) {
+        let transport = Arc::new(self);
+        tokio::spawn(async move {
+            let transport = Arc::clone(&transport);
+            let mut buf = [0u8; 64];
+
+            loop {
+                let n = {
+                    let mut port = transport.port.lock().await;
+                    match port.read(&mut buf).await {
+                        Ok(n) => n,
+                        Err(e) => {
+                            eprintln!("Read error: {:?}", e);
+                            break;
+                        }
+                    }
+                };
+
+                if n > 0 {
+                    print!("RX: ");
+                    for b in &buf[..n] {
+                        print!("{:02X} ", b);
+                    }
+                    println!();
+                }
+            }
+        });
     }
 }
