@@ -85,7 +85,7 @@ impl MM2TTransport {
 
     /// read bytes over the port
     #[cfg(feature = "mm2t-rx")]
-    pub async fn read_many(&self) -> anyhow::Result<Vec<u8>> {
+    pub async fn read_many(&self, max_bytes: usize) -> anyhow::Result<Vec<u8>> {
         let mut port = self.port.lock().await;
         let mut buf = vec![0u8; max_bytes];
 
