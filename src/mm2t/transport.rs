@@ -7,8 +7,6 @@ use tokio_serial::{SerialStream, SerialPortBuilderExt, DataBits, Parity,
 use tokio::io::AsyncWriteExt;
 #[cfg(feature = "mm2t-rx")]
 use tokio::io::AsyncReadExt;
-#[cfg(feature = "mm2t-rx")]
-use std::sync::Arc;
 
 /// Represents a handle to an MM2T device over a serial connection.
 ///
@@ -85,33 +83,15 @@ impl MM2TTransport {
         Ok(buf[0])
     }
 
+    /// read bytes over the port
     #[cfg(feature = "mm2t-rx")]
-    pub fn spawn_raw_read(&self) {
-        let transport = Arc::new(self);
-        tokio::spawn(async move {
-            let transport = Arc::clone(&transport);
-            let mut buf = [0u8; 64];
+    pub async fn read_many(&self) -> anyhow::Result<Vec<u8>> {
+        let mut port = self.port.lock().await;
+        let mut buf = vec![0u8; max_bytes];
 
-            loop {
-                let n = {
-                    let mut port = transport.port.lock().await;
-                    match port.read(&mut buf).await {
-                        Ok(n) => n,
-                        Err(e) => {
-                            eprintln!("Read error: {:?}", e);
-                            break;
-                        }
-                    }
-                };
+        let n = port.read(&mut buf).await?;
+        buf.truncate(n); // only keep the bytes that were actually read
 
-                if n > 0 {
-                    print!("RX: ");
-                    for b in &buf[..n] {
-                        print!("{:02X} ", b);
-                    }
-                    println!();
-                }
-            }
-        });
+        Ok(buf)
     }
 }
