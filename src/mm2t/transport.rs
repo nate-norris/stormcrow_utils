@@ -8,7 +8,7 @@ use tokio::io::AsyncWriteExt;
 #[cfg(feature = "mm2t-rx")]
 use tokio::io::AsyncReadExt;
 #[cfg(feature = "mm2t-rx")]
-use tokio::sync::Arc;
+use std::sync::Arc;
 
 /// Represents a handle to an MM2T device over a serial connection.
 ///
