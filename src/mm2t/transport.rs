@@ -77,6 +77,7 @@ impl MM2TTransport {
     pub async fn read(&self) -> anyhow::Result<u8> {
         let mut port = self.port.lock().await;
         let mut buf = [0u8; 1];
+        println!("mm2t read: {:?}", buf[0]);
         port.read_exact(&mut buf).await?;
         Ok(buf[0])
     }
