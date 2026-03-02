@@ -77,7 +77,7 @@ impl MM2TTransport {
         let mut port = self.port.lock().await;
         let mut buf = [0u8; 1];
 
-        match port.read(&mut buf) {
+        match port.read(&mut buf).await {
             Ok(n) if n > 0 => Ok(Some(buf[0])),
             Ok(_) => Ok(None), // driver timeout or no data Ok(0)
             Err(ref e) if e.kind() == std::io::ErrorKind::TimedOut =>
