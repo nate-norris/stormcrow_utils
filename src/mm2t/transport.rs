@@ -73,12 +73,16 @@ impl MM2TTransport {
 
     /// read bytes over the port
     #[cfg(feature = "mm2t-rx")]
-    pub async fn read(&self) -> anyhow::Result<u8> {
+    pub async fn read(&self) -> anyhow::Result<Option<u8>> {
         let mut port = self.port.lock().await;
         let mut buf = [0u8; 1];
-        
-        port.read_exact(&mut buf).await?;
-        Ok(buf[0])
+
+        match port.read(&mut buf) {
+            Ok(1) => Ok(Some(buf[0])),
+            Ok(0) => Ok(None), // driver timeout
+            Ok(_) => unreachable!(),
+            Err(e) => Err(e.into())
+        }
     }
 
     /// read bytes over the port
