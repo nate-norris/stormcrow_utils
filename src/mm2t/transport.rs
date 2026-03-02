@@ -78,9 +78,10 @@ impl MM2TTransport {
         let mut buf = [0u8; 1];
 
         match port.read(&mut buf) {
-            Ok(1) => Ok(Some(buf[0])),
-            Ok(0) => Ok(None), // driver timeout
-            Ok(_) => unreachable!(),
+            Ok(n) if n > 0 => Ok(Some(buf[0])),
+            Ok(_) => Ok(None), // driver timeout or no data Ok(0)
+            Err(ref e) if e.kind() == std::io::ErrorKind::TimedOut =>
+                Ok(None), // driver timeout linux
             Err(e) => Err(e.into())
         }
     }
