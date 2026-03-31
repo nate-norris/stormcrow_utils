@@ -10,11 +10,11 @@
 // internal package imports
 pub(crate) mod checksum;
 pub(crate) mod models;
+pub(crate) mod weather_payload;
 
 // packets always included regardless of features
 mod packet;
 mod transport;
-
 
 // optional mm2t-rx feature
 #[cfg(feature = "mm2t-rx")]
@@ -23,6 +23,7 @@ pub mod packet_decoder;
 // re-export commmon types and functions
 pub use transport::MM2TTransport;
 pub use packet::PacketT;
+pub use weather_payload::WeatherPayload;
 #[cfg(feature = "mm2t-rx")]
 pub use packet_decoder::PacketDecoder;
 #[cfg(feature = "mm2t-rx")]
