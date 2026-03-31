@@ -7,13 +7,13 @@ use serde::Serialize;
 #[repr(C)]
 #[derive(Debug, Serialize, Clone, Copy)]
 pub struct WeatherPayload {
-    site_id: u8,
-    altitude: f32,
-    wind_full: f32,
-    wind_dir: f32,
-    temp: f32,
-    humidity: f32,
-    baro: f32,
+    pub site_id: u8,
+    pub altitude: f32,
+    pub wind_full: f32,
+    pub wind_dir: f32,
+    pub temp: f32,
+    pub humidity: f32,
+    pub baro: f32,
 }
 
 impl WeatherPayload {
