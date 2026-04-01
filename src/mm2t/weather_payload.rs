@@ -6,6 +6,7 @@ use serde::Serialize;
 
 #[repr(C)]
 #[derive(Debug, Serialize, Clone, Copy)]
+#[serde(rename_all = "camelCase")]
 pub struct WeatherPayload {
     pub site_id: u8,
     pub altitude: f32,
