@@ -1,7 +1,8 @@
 use tokio::sync::mpsc;
+use serde::{Deserialize};
 
 /// Notification events emitted by speaker hardware or serial interrupts
-#[derive(Debug)]
+#[derive(Debug, Deserialize)]
 pub enum SpeakerNotification {
     Boom, // sound sensor has detected an event
     // both SoundSensorError and Radio error trigger program failure
