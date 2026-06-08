@@ -83,6 +83,15 @@ pub async fn speaker_consume_task(mut rx: SpeakerRx) {
             SpeakerNotification::WeatherTimeoutError(is_on) => {
                 if is_on && !error_triggered { runner.on(); } else { runner.off();}
             }
+            // notify user of general error
+            SpeakerNotification::GeneralError => {
+                let _ = speaker.perform_general_alert();
+                let _ = speaker.perform_general_alert();
+            }
+            // notify user of an event
+            SpeakerNotification::GeneralAlert => {
+                let _ = speaker.perform_general_alert();
+            }
         }
     }
 

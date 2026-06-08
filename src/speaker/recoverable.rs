@@ -27,7 +27,7 @@ where
 
                 // call recoverable action if in recoverable mode every 2 sec
                 while *rx.borrow() {
-                    task_target_clone.perform_recoverable().await?;
+                    task_target_clone.perform_general_alert().await?;
                     sleep(Duration::from_secs(2)).await;
                 }
             }

@@ -56,16 +56,17 @@ impl SpeakerT for SpeakerMock {
         });
     }
 
-    /// Implementation of recoverable pattern
+    /// Implementation of general alert pattern
     /// 
     /// # Behavior
-    /// This is activated when the caller has an error that is possible
-    /// to recover from. It can be turned off or on during execution.
-    /// The handling of the watch channel for this event is completed by
-    /// RecoverableRunner struct.
+    /// This is activated when the caller has an error or alert that is non
+    /// specific.
+    /// 
+    /// The pattern is used with RecoverableRunner struct and the watch channel 
+    /// and can be turned on or off for continuous alerts.
     #[allow(dead_code)]
-    async fn perform_recoverable(&self) -> anyhow::Result<()> {
-        println!("speaker mock: recoverable error pattern");
+    async fn perform_general_alert(&self) -> anyhow::Result<()> {
+        println!("speaker mock: alert pattern");
         Ok(())
     }
 }

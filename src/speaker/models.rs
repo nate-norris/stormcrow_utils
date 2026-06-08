@@ -9,6 +9,8 @@ pub enum SpeakerNotification {
     RadioError, // notification for radio hardware issues
     AirmarError, // notification for airmar weather hardware issues
     WeatherTimeoutError(bool), // notification for delay in receiving weather
+    GeneralError, // general purpose error alert
+    GeneralAlert, // general purpose non error alert
 }
 
 // mpsc channels for SpeakerNotification types

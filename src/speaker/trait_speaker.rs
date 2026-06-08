@@ -43,12 +43,13 @@ pub(crate) trait SpeakerT: Send + Sync {
     /// its own async task rather than block the caller.
     fn spawn_error_pattern(&self);
 
-    /// Implementation of recoverable pattern
+    /// Implementation of general alert pattern
     /// 
     /// # Behavior
-    /// This is activated when the caller has an error that is possible
-    /// to recover from. It can be turned off or on during execution.
-    /// The handling of the watch channel for this event is completed by
-    /// RecoverableRunner struct.
-    async fn perform_recoverable(&self) -> anyhow::Result<()>;
+    /// This is activated when the caller has an error or alert that is non
+    /// specific.
+    /// 
+    /// The pattern is used with RecoverableRunner struct and the watch channel 
+    /// and can be turned on or off for continuous alerts.
+    async fn perform_general_alert(&self) -> anyhow::Result<()>;
 }
