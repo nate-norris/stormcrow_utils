@@ -62,6 +62,7 @@ pub async fn speaker_consume_task(mut rx: SpeakerRx) {
 
     // wait for incoming SpeakerRx
     while let Some(event) = rx.recv().await {
+        println!("SpeakerRx: {:?}", event);
         match event {
             // when there is a boom with no errors create the boom pattern
             // NOTE: this only applies to program using Boom notifications
