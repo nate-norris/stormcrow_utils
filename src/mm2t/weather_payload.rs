@@ -26,8 +26,6 @@ impl WeatherPayload {
     /// - `Vec<u8>` properly structured payload
     pub fn encode_into(self) -> Vec<u8> {
         let mut buf = Vec::with_capacity(Self::SIZE);
-        println!("encode into val: {}", self.wind_dir);
-        println!("encode into bytes: {:?}", self.wind_dir.to_le_bytes());
 
         buf.push(self.site_id);
         buf.extend(self.altitude.to_le_bytes());
@@ -81,7 +79,7 @@ impl WeatherPayload {
         if payload.len() < Self::SIZE {
             anyhow::bail!("Weather payload too small");
         }
-        println!("decode from val: {}", f32::from_le_bytes(payload[9..13].try_into()?));
+        
         Ok(Self {
             site_id: payload[0],
             altitude: f32::from_le_bytes(payload[1..5].try_into()?),
