@@ -8,6 +8,7 @@ use std::path::{PathBuf, Path};
 use std::fs::OpenOptions;
 use simplelog::*;
 use log::LevelFilter;
+use time::macros::format_description;
 
 /// Starts async file-based log service for a headless program.
 /// The file is created automatically if missing. 
@@ -41,8 +42,10 @@ pub fn init_logger(dir_path: Option<&Path>) {
     simplelog::WriteLogger::init(
         LevelFilter::Info,
         ConfigBuilder::new()
-            .set_time_format_rfc3339()
-            .set_location_level(LevelFilter::Error)
+            .set_time_format_custom(format_description!(
+                "[year]-[month]-[day] [hour]:[minute]:[second]"
+            ))
+            .set_location_level(LevelFilter::Off)
             .build(),
         log_file
     ).unwrap();
