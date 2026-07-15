@@ -9,7 +9,7 @@ use serde::Serialize;
 #[serde(rename_all = "camelCase")]
 pub struct WeatherPayload {
     pub site_id: u8,
-    pub altitude: i16,
+    pub altitude: f32,
     pub wind_full: f32,
     pub wind_dir: f32,
     pub temp: f32,
@@ -18,7 +18,7 @@ pub struct WeatherPayload {
 }
 
 impl WeatherPayload {
-    const SIZE: usize = 23; // buffer allocation size
+    const SIZE: usize = 25; // buffer allocation size
 
     /// Provide a byte vector given a WeatherPayload struct is set on Self
     ///
@@ -45,12 +45,12 @@ impl WeatherPayload {
     /// | Offset | Field      | Type  | Size |
     /// |--------|------------|-------|------|
     /// | 0      | site_id    | u8    | 1    |
-    /// | 1..3   | altitude   | f32   | 4    |
-    /// | 3..7   | wind_full  | f32   | 4    |
-    /// | 7..11  | wind_dir   | f32   | 4    |
-    /// | 11..15 | temp       | f32   | 4    |
-    /// | 15..19 | humidity   | f32   | 4    |
-    /// | 19..23 | baro       | f32   | 4    |
+    /// | 1..5   | altitude   | f32   | 4    |
+    /// | 5..9   | wind_full  | f32   | 4    |
+    /// | 9..13  | wind_dir   | f32   | 4    |
+    /// | 13..17 | temp       | f32   | 4    |
+    /// | 17..21 | humidity   | f32   | 4    |
+    /// | 21..25 | baro       | f32   | 4    |
     ///
     /// # Parameters
     ///
@@ -82,12 +82,12 @@ impl WeatherPayload {
         
         Ok(Self {
             site_id: payload[0],
-            altitude: i16::from_le_bytes(payload[1..3].try_into()?),
-            wind_full: f32::from_le_bytes(payload[3..7].try_into()?),
-            wind_dir: f32::from_le_bytes(payload[7..11].try_into()?),
-            temp: f32::from_le_bytes(payload[11..15].try_into()?),
-            humidity: f32::from_le_bytes(payload[15..19].try_into()?),
-            baro: f32::from_le_bytes(payload[19..23].try_into()?),
+            altitude: f32::from_le_bytes(payload[1..5].try_into()?),
+            wind_full: f32::from_le_bytes(payload[5..9].try_into()?),
+            wind_dir: f32::from_le_bytes(payload[9..13].try_into()?),
+            temp: f32::from_le_bytes(payload[13..17].try_into()?),
+            humidity: f32::from_le_bytes(payload[17..21].try_into()?),
+            baro: f32::from_le_bytes(payload[21..25].try_into()?),
         })
     }
 }
